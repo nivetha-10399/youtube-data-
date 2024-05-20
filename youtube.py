@@ -359,7 +359,7 @@ def show_comments_table():
 #streamlit part
 
 with st.sidebar:
-    st.title(":red[YOUTUBE DATA HARVESTING AND WAREHOUSING]")
+    st.title(":black[YOUTUBE DATA HARVESTING AND WAREHOUSING]")
     st.header("Skill Take Away")
     st.caption("Python scripting")
     st.caption("Data collection")
@@ -449,7 +449,7 @@ elif question=="2.Which channels have the most number of videos, and how many vi
 
 elif question=="3.What are the top 10 most viewed videos and their respective channels?":
 
-    query3="""select view_count as views,channel_name as channelname,video_name as videotitle from vidoes 
+    query3="""select view_count as views,channel_name as channelname,video_name as videotitle from videos 
           where view_count is not null order by views desc limit 10 """
     cursor.execute(query3)
     mydb.commit()
@@ -460,7 +460,7 @@ elif question=="3.What are the top 10 most viewed videos and their respective ch
 
 elif question=="4.How many comments were made on each video,and what are their corresponding video names?":
 
-      query4="""select comment_count as no_of_comments,video_name as videos where comments is not null """
+      query4="""select comment_count as no_of_comments,video_name as videos from videos where comment_count is not null """
       cursor.execute(query4)
       mydb.commit()
       t4=cursor.fetchall()
@@ -470,7 +470,7 @@ elif question=="4.How many comments were made on each video,and what are their c
 
 elif question=="5.Which videos have the highest number of likes,and what are their corresponding channel names?":
     query5="""select video_name as videotitle,channel_name as channelname,like_count as likecount from videos
-            where likes is not null order by like_count desc """
+            where like_count is not null order by like_count desc """
     cursor.execute(query5)
     mydb.commit()
     t5=cursor.fetchall()
@@ -502,7 +502,9 @@ elif question=="8.what are the names of all channels that have published videos 
     mydb.commit()
     t8=cursor.fetchall()
     df7=pd.DataFrame(t8,columns=["video_title","published_date","channel_name"])
+    st.write(df7)
 
+    
 elif question=="9.What is the average duration of all videos in each channel,and what are their corresponding channel names?":
     query9="""select channel_name as channelname,AVG(duration) as averageduration from videos group by channel_name"""
     cursor.execute(query9)
@@ -510,18 +512,18 @@ elif question=="9.What is the average duration of all videos in each channel,and
     t9=cursor.fetchall()
     df8=pd.DataFrame(t9,columns=["channelname","averageduration"])
     
-T9=[]
-for index,row in df8.iterrows():
-    channel_title=row["channelname"]
-    average_duration=row["averageduration"]
-    average_duration_str=str(average_duration)
-    T9.append(dict(channeltitle=channel_title,avgduration=average_duration_str))
-df1.pd.DataFrame(T9)
-st.write(df1)
+    T9=[]
+    for index,row in df8.iterrows():
+        channel_title=row["channelname"]
+        average_duration=row["averageduration"]
+        average_duration_str=str(average_duration)
+        T9.append(dict(channeltitle=channel_title,avgduration=average_duration_str))
+    df1=pd.DataFrame(T9)
+    st.write(df1)
 
 elif question=="10.which videos have the highest number of comments,and what are their corresponding channel names?":
     query10="""select video_name as videotitle,channel_name as channelname,comment_count as comments from videos
-        where comments is not null order by comment_count desc """
+        where comment_count is not null order by comment_count desc """
     cursor.execute(query10)
     mydb.commit()
     t10=cursor.fetchall()
