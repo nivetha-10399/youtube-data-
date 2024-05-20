@@ -20,7 +20,7 @@ YouTube Data Harvesting and Warehousing is a project aimed at developing a user-
 - Pandas
 - Application Programming Interface (API)
 - Streamlit
-- Plotly
+
 
 
 
