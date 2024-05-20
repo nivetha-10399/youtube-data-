@@ -183,11 +183,16 @@ def channel_tables(channel_names):
                 row['Channel_Description'],
                 row['Playlist_Id'])
         
+        try:
         
-        cursor.execute(insert_query,values)
-        mydb.commit()
+            cursor.execute(insert_query,values)
+            mydb.commit()
         
-        print("channels values are already inserted")
+        except:
+
+            news=f"Your provided Channel Name {channel_names} already exists"
+
+            return news
 
 
 def videos_table(channel_names):
@@ -313,11 +318,17 @@ def comments_table(channel_names):
 
 
 def tables(single_channel):
-    channel_tables(single_channel)
-    videos_table(single_channel)
-    comments_table(single_channel)
+        
 
-    return "Tables Created Successfully" 
+    news=channel_tables(single_channel)
+    if news:
+        return news
+    
+    else:
+        videos_table(single_channel)
+        comments_table(single_channel)
+
+        return "Tables Created Successfully" 
 
 
 
@@ -504,7 +515,7 @@ elif question=="8.what are the names of all channels that have published videos 
     df7=pd.DataFrame(t8,columns=["video_title","published_date","channel_name"])
     st.write(df7)
 
-    
+
 elif question=="9.What is the average duration of all videos in each channel,and what are their corresponding channel names?":
     query9="""select channel_name as channelname,AVG(duration) as averageduration from videos group by channel_name"""
     cursor.execute(query9)
